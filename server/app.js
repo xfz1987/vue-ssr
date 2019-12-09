@@ -44,17 +44,17 @@ app.use(json())
 app.use(cors({ credentials: true }))
 
 // 配置静态文件目录
-app.use(serve(config.staticDir))
+// app.use(serve(config.staticDir))
 
 // 模版引擎
-app.context.render = co.wrap(render({
-  root: config.viewDir,
-  autoescape: true,
-  cache: 'memory',
-  ext: 'html',
-  varControls: ["[[","]]"],//默认动态数据是{{}}，但是为了与vue区分开来，改为[[xxx]]
-  writeBody: false
-}))
+// app.context.render = co.wrap(render({
+//   root: config.viewDir,
+//   autoescape: true,
+//   cache: 'memory',
+//   ext: 'html',
+//   varControls: ["[[","]]"],//默认动态数据是{{}}，但是为了与vue区分开来，改为[[xxx]]
+//   writeBody: false
+// }))
 
 // Time Logger
 app.use(async (ctx, next) => {
@@ -67,7 +67,7 @@ app.use(async (ctx, next) => {
 // 处理favicon
 app.use(async (ctx, next) => {
 	if (ctx.path === '/favicon.ico') {
-		await send(ctx, '/favicon.ico', { root: join(__dirname, '.') })
+		await send(ctx, '/favicon.ico', { root: join(__dirname, '../') })
 	} else {
 		await next()
 	}

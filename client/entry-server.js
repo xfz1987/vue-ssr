@@ -2,22 +2,22 @@ import { createApp } from './app.js'
 export default context => {
   return new Promise((resolve, reject) => {
     const { app, router, store } = createApp()
+    
+    // 把访问后端的真实路由地址跳转到客户端vue的虚拟路由，进入转到相应的vue页面
     router.push(context.url)
+    
     router.onReady(() => {
-      const matchedComponents = router.getMatchedComponents();
-      // if (!matchedComponents.length) {
-         //reject({ code: 404 })
-      // }
+      const matchedComponents = router.getMatchedComponents()
+      if (!matchedComponents.length) {
+        reject({ code: 404 })
+      }
       // 对所有匹配的路由组件调用 `asyncData()`
- //       Promise.all(matchedComponents.map(({ asyncData }) => asyncData && asyncData({
- // +        store,
- // +        route: router.currentRoute
- // +      }))).then(() => {
       Promise.all(matchedComponents.map(Component => {
         if (Component.asyncData) {
           return Component.asyncData({
             store,
-            route: router.currentRoute
+            route: router.currentRoute,
+            router
           })
         }
       })).then(() => {
@@ -27,6 +27,8 @@ export default context => {
         // 并且 `template` 选项用于 renderer 时，
         // 状态将自动序列化为 `window.__INITIAL_STATE__`，并注入 HTML。
         context.state = store.state
+        context.meta = app.$meta()
+        context.router = router
         resolve(app)
       }).catch(reject)
     }, reject)

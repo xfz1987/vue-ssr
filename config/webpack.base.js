@@ -85,7 +85,7 @@ module.exports = {
 				use: cssLoaders
 			},
 			{
-				test: /\.(png|jpg|gif|eot|woff|woff2|ttf|svg|otf)$/,
+				test: /\.(png|jpg|jpeg|gif|eot|woff|woff2|ttf|svg|otf)$/,
     		loader: imageloaders
 			}
 		]

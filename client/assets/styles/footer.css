@@ -1,0 +1,12 @@
+:root{
+	--footColor: gray;
+	--fontSize: 30px;
+}
+
+.footer{
+  margin-top: 40px;
+  text-align: center;
+  color: var(--footColor);
+  font-size: var(--fontSize);
+  text-shadow: 0 1px 0 1px;
+}

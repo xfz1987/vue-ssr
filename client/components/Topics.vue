@@ -1,7 +1,7 @@
 <template>
   <div>
       <div v-for="topic in topics">
-        <p>{{topic.title}}</p>
+        <p class="f-0">{{topic.title}}</p>
       </div>
   </div>
 </template>
@@ -13,7 +13,17 @@ const fetchInitialData = ({ store, route }) => {
   console.log('获取的路由数据', route.params.id);
   return store.dispatch(`getTopics`)
 }
+
 export default {
+  metaInfo: {
+    title: 'Test page',
+    meta: [
+			{
+      	name: 'keyWords',
+      	content: 'test'
+			}
+		]
+  },
   asyncData: fetchInitialData,
   computed: {
     ...mapGetters({
@@ -21,12 +31,13 @@ export default {
     })
   },
   mounted () {
+    console.log('123123213')
     fetchInitialData({ store: this.$store, route: this.$route })
   }
 }
 </script>
 <style>
-  span{
+  .f-0{
     color: yellowgreen;
   }
 </style>

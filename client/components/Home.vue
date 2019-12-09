@@ -2,11 +2,20 @@
   <div class="home">首页</div>
 </template>
 <script>
-console.log('Vue SSR Clinet Notes');
+export default {
+  metaInfo: {
+    title: 'Home page',
+    meta: [
+			{
+      	name: 'keywords',
+      	content: 'home'
+			}
+		]
+  },
+}
 </script>
 <style>
 .home {
 	color: red;
-	transform: translateX(-50px);
 }
 </style>

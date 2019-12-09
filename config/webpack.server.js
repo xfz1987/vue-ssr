@@ -14,7 +14,7 @@ const config = {
 	entry: join(__dirname, '../client/entry-server.js'),
 	output: {
 		libraryTarget: 'commonjs2',//module.exports = xxx，因为是运行在node环境下的代码
-		filename: 'server-entry.js',
+		// filename: 'server-entry.js',
 		path: join(__dirname, '../public'),
 		publicPath: assetsPath.publicPath
 	},
@@ -32,8 +32,8 @@ const config = {
 };
 
 //开发环境使用 vue-ssr-server-bundle.json，生产环境使用 server-entry.js
-if (isDev) {
+// if (isDev) {
 	config.plugins.push(new VueSSRServerPlugin())
-}
+// }
 
 module.exports = merge(baseConf, config)

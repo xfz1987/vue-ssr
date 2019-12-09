@@ -7,8 +7,11 @@
        <router-link to="/about"><span>无状态组件</span></router-link>
        <router-link to="/test"><span>异步组件</span></router-link>
      </div>
-     <img width="300px" src="./assets/logo.png" />
-     <router-view class="view"></router-view>
+     <img class="logo" src="./assets/images/logo.png" />
+     <transition name="fade" mode="out-in">
+       <router-view class="view" />
+     </transition>
+     
   </div>
 </template>
 
@@ -17,17 +20,19 @@ console.log(process.env.NODE_ENV)
 </script>
 
 <style>
- * {
-    /* Basic CSS reset */
-    margin:0;
-    padding:0;
-  }
-  body {
-    background: #eee;
-    text-align: center;
+  .view {
+    width: 500px;
+    background: #fff;
+    margin: 10px auto;
+    min-height: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0.8;
   }
   .ribbon {
-    display:inline-block;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
   }
   .ribbon:after, .ribbon:before {
     margin-top:0.5em;
@@ -76,5 +81,17 @@ console.log(process.env.NODE_ENV)
     right:0;
     border-left:0.5em solid #9B8651;
     border-bottom:0.5em solid #fff;
+  }
+  .logo {
+    position: absolute;
+    width: 100px;
+    left: 100px;;
+    top: 30px;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 </style>
