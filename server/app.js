@@ -24,7 +24,7 @@ app.proxy = true
 
 // logger
 configure({
-	appenders: { cheese: { type: 'file', filename: resolve(__dirname, './logs/server.log') } },
+	appenders: { cheese: { type: 'file', filename: resolve(__dirname, '../logs/server.log') } },
 	categories: { default: { appenders: ['cheese'], level: 'error' } }
 })
 const logger = getLogger('cheese')

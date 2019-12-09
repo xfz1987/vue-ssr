@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 dist/
+public/
 logs/
 
 # Editor directories and files
