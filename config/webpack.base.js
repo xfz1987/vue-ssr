@@ -1,40 +1,8 @@
 const { resolve } = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const createVueLoaderOpts = require('./vue-laoder.config')
 const { ENV, isDev, assetsPath } = require('./env')
-
-// css loader
-const cssLoaders = [
-  { loader: 'css-loader', options: { importLoaders: 1 } },
-  'postcss-loader'
-]
-
-cssLoaders.unshift(isDev ? 'vue-style-loader': MiniCssExtractPlugin.loader)
-
-// css plugin
-const cssPlugins = isDev ? [] : [
-  // 提取css
-  new MiniCssExtractPlugin({
-    filename: 'styles/[name].[contenthash:5].css',
-    // chunkFilename: 'styles/[name].[contenthash:5].css'
-  }),
-  new OptimizeCSSAssetsPlugin({
-    assetNameRegExp: /\.css$/g,
-    cssProcessor: require('cssnano'),
-    cssProcessorPluginOptions: {
-      preset: ['default', {
-        discardComments: {
-          removeAll: true,
-        },
-        normalizeUnicode: false
-      }]
-    },
-    canPrint: true
-  }),
-]
 
 // image loader
 const imageloaders = [
@@ -81,10 +49,6 @@ module.exports = {
 				loader: 'babel-loader'
 			},
 			{
-				test: /\.css$/,
-				use: cssLoaders
-			},
-			{
 				test: /\.(png|jpg|jpeg|gif|eot|woff|woff2|ttf|svg|otf)$/,
     		loader: imageloaders
 			}
@@ -100,7 +64,6 @@ module.exports = {
   devtool: isDev ? '#cheap-module-source-map' : false,
 	plugins: [
     new ProgressBarPlugin(),
-    new VueLoaderPlugin(),
-    ...cssPlugins
+    new VueLoaderPlugin()
 	]
 };

@@ -1,12 +1,16 @@
+const webpack = require('webpack')
 const { join } = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const WebpackBuildNotifierPlugin = require('webpack-build-notifier')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
 const merge = require('webpack-merge')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const baseConf = require('./webpack.base')
-const { isDev, assetsPath } = require('./env')
+const { ENV, isDev, assetsPath } = require('./env')
 
 let config = {
   target: 'web',
@@ -18,7 +22,23 @@ let config = {
     path: join(__dirname, '../public'),
     publicPath: assetsPath.publicPath
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          isDev ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(ENV),
+      'process.env.VUE_ENV': '"client"'
+    }),
     new VueSSRClientPlugin()
   ]
 }
@@ -27,9 +47,9 @@ if (isDev) {
   config = merge(baseConf, config, {
     devServer: {
       clientLogLevel: 'warning',
-      
       port: '3000',
       publicPath: '/',
+      contentBase: join(__dirname, '../public'),
       //编译错误时，显示在网页上
       overlay: {
         errors: true
@@ -93,11 +113,28 @@ if (isDev) {
             priority: -10,//优先级 比如同时符合vender 和 default 这个优先级高 所以存在这里
             filename: 'vendors.js', //拆分后打包的文件名字
           },
-
         }
       }
     },
     plugins: [
+      // 提取css
+      new MiniCssExtractPlugin({
+        filename: 'styles/[name].[contenthash:5].css',
+        // chunkFilename: 'styles/[name].[contenthash:5].css'
+      }),
+      new OptimizeCSSAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require('cssnano'),
+        cssProcessorPluginOptions: {
+          preset: ['default', {
+            discardComments: {
+              removeAll: true,
+            },
+            normalizeUnicode: false
+          }]
+        },
+        canPrint: true
+      }),
       new HtmlWebpackPlugin({
         template: join(__dirname, '../client/index.html'),
         name: 'index.html'

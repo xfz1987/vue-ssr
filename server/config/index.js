@@ -8,7 +8,7 @@ console.log('env: ', env)
 
 let baseConfig = {
   viewDir: join(__dirname, '..', 'views'),
-  staticDir: join(__dirname, '..', 'public'),
+  staticDir: join(__dirname, '..', 'assets'),
   env,
 }
 

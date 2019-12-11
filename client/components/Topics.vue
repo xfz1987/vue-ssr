@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div v-for="topic in topics">
+      <div :key="topic.id" v-for="topic in topics">
         <p class="f-0">{{topic.title}}</p>
       </div>
   </div>
@@ -16,11 +16,11 @@ const fetchInitialData = ({ store, route }) => {
 
 export default {
   metaInfo: {
-    title: 'Test page',
+    title: 'Topics page',
     meta: [
 			{
-      	name: 'keyWords',
-      	content: 'test'
+      	name: 'keywords',
+      	content: 'topics'
 			}
 		]
   },
@@ -31,7 +31,8 @@ export default {
     })
   },
   mounted () {
-    console.log('123123213')
+    console.log(process.env.VUE_ENV)
+    if (this.topics.length) return false
     fetchInitialData({ store: this.$store, route: this.$route })
   }
 }

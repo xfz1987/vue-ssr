@@ -6,10 +6,12 @@
   "scripts": {
     "start": "export NODE_ENV=development && nodemon --inspect bin/www",
     "start:dev": "export NODE_ENV=development && ./node_modules/.bin/nodemon bin/www",
+    "start:prod": "export NODE_ENV=production && node bin/www",
     "dev:client": "export NODE_ENV=development && webpack-dev-server --config config/webpack.client.js",
     "dev:server": "export NODE_ENV=development && webpack --config config/webpack.server.js",
-    "build": "rm -rf public && npm run build:client && npm run build:server",
+    "build": "rm -rf public && rm -rf ssr-build && npm run build:client && npm run build:server",
     "build:client": "export NODE_ENV=production && webpack --config config/webpack.client.js",
+    "build:server-bundle": "export NODE_ENV=production && export NODE_TYPE=bundle && webpack --config config/webpack.server.js",
     "build:server": "export NODE_ENV=production && webpack --config config/webpack.server.js",
     "precommit": "eslint --ext .js --ext .jsx client/"
   },

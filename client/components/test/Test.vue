@@ -7,8 +7,17 @@
 
 <script>
 export default {
+  metaInfo: {
+    title: 'Test page',
+    meta: [
+			{
+      	name: 'keywords',
+      	content: 'test'
+			}
+		]
+  },
   mounted () {
-    import("./Test.js").then(function(res) {
+    import(/* webpackChunkName: "lazy-test" */ './Test.js').then(function(res) {
       res.default();
     });
   }
