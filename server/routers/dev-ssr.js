@@ -10,7 +10,8 @@ const MemoryFS = require('memory-fs')
 const webpack = require('webpack')
 const { createBundleRenderer } = require('vue-server-renderer')
 const serverConfig = require('../../config/webpack.server')
-const serverRender = require('../common/server-render')
+// const serverRender = require('../common/server-render')
+const serverRender = require('../common/server-render-stream')
 
 /* start 在node中运行webpack */
 //获取webpack配置
@@ -53,7 +54,21 @@ const handleSSR = async (ctx) => {
 		
 		const renderer = createBundleRenderer(bundle, {
 			inject: false,
-			clientManifest
+			runInNewContext: false, // 推荐
+			clientManifest,
+			prefetch: true,
+			shouldPreload: (file, type) => {
+				if (type === 'script' || type === 'style') {
+					return true
+				}
+				if (type === 'font') {
+					// 只预加载 woff2 字体
+					return /\.woff2$/.test(file)
+				}
+				if (type === 'image') {
+					return false
+				}
+			}
 		})
 
 		await serverRender(ctx, renderer, template)
