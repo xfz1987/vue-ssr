@@ -39,6 +39,8 @@ let config = {
       'process.env.NODE_ENV': JSON.stringify(ENV),
       'process.env.VUE_ENV': '"client"'
     }),
+    //该文件包就是前端资源文件的路径及异步加载文件的路径和关系的图谱
+    //该文件用于服务端渲染时，写入html中script与link所用
     new VueSSRClientPlugin()
   ]
 }
